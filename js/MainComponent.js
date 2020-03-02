@@ -1,5 +1,21 @@
-function getData() {
+function getJson (){
+    //not working
+    fetch('./Data/data.json')
+        .then(response => {
+            return response.json()
+        })
+        .then(data => {
+            // Work with JSON data here
+            console.log(data)
+        })
+        .catch(err => {
+            console.log("error")
+        })
+}
 
+
+
+function getData() {
     //TODO: load the json data from file
     let productsData = [
         {
@@ -5562,30 +5578,42 @@ function getData() {
 function populateData() {
     allProducts = getData();
     const distinctManufactures = [...new Set(allProducts.map(p => p.manufacturer))];
-    for (let i = 0; i < distinctManufactures.length; i++) {
+
+    for(const distinctManufacture of distinctManufactures ){
         let button = document.createElement("BUTTON");
-        button.innerHTML = distinctManufactures[i];
+        button.innerHTML = distinctManufacture;
         button.onclick = function () {
-            populateObjects(distinctManufactures[i]);
+            populateObjects(distinctManufacture);
         };
 
-        document.getElementById("search").appendChild(button);
+        document.getElementById("search").appendChild(button); 
     }
 }
+
 
 window.onload = populateData;
 
 function populateObjects(manufacturer) {
+
     const dataDiv = document.getElementById("data");
     dataDiv.innerHTML = '';
     let products = allProducts;
     products = products.filter(product => product.manufacturer == manufacturer);
     filteredProducts = [];
+    /*
     for (let k = 0; k < products.length; k++) {
         if (!filteredProducts.includes(products[k])) {
             filteredProducts.push(products[k]);
         }
         products = filteredProducts;
+    }
+    */
+
+    for (const product of products){
+        if(!filteredProducts.includes(product)){
+            filteredProducts.push(product);
+        }
+        products =filteredProducts;
     }
 
     for (let i = 0; i < products.length; i++) {
